@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class SpecializationController {
     private final SpecializationService service;
     private final SpecializationMapper mapper;
+
     @PostMapping
     public SpecializationResponse create(@RequestBody SpecializationCreateRequest request) {
-        return mapper.fromEntityToResponse(service.create(
-                mapper.fromCreateRequestToEntity(request)
-        ));
+        return mapper.fromEntityToResponse(
+                service.create(mapper.fromCreateRequestToEntity(request)),
+                null);
     }
 
     @GetMapping("/all")
     public AllSpecializationResponse getAll() {
         return new AllSpecializationResponse(
-                mapper.fromEntityListToResponseList(service.getAll())
+                service.getAll()
         );
     }
 

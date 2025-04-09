@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: cast-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+
+  backend:
+    image: openjdk:21
+    container_name: spring-backend-cast
+    restart: always
+    depends_on:
+      - postgres
+    volumes:
+      - ./cast-find-backend-0.0.1-SNAPSHOT.jar:/app/backend.jar
+    working_dir: /app
+    command: ["java", "-jar", "backend.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+      SPRING_FLYWAY_ENABLED: "true"
+    ports:
+      - "8010:8010"
+    networks:
+      - app-network
+
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

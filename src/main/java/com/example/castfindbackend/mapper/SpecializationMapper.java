@@ -1,9 +1,11 @@
 package com.example.castfindbackend.mapper;
 
+import com.example.castfindbackend.dto.photo.PhotoResponse;
 import com.example.castfindbackend.dto.specialization.SpecializationCreateRequest;
 import com.example.castfindbackend.dto.specialization.SpecializationResponse;
 import com.example.castfindbackend.entity.Specialisation;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import java.util.List;
@@ -12,7 +14,8 @@ import java.util.List;
 public interface SpecializationMapper {
     Specialisation fromCreateRequestToEntity(SpecializationCreateRequest request);
 
-    SpecializationResponse fromEntityToResponse(Specialisation specialisation);
+    @Mapping(target = "photo", source = "photo")
+    SpecializationResponse fromEntityToResponse(Specialisation specialisation, PhotoResponse photo);
 
-    List<SpecializationResponse> fromEntityListToResponseList(List<Specialisation> specialisation);
+    //List<SpecializationResponse> fromEntityListToResponseList(List<Specialisation> specialisation);
 }

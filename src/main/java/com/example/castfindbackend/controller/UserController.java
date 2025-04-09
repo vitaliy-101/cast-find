@@ -2,13 +2,16 @@ package com.example.castfindbackend.controller;
 
 import com.example.castfindbackend.dto.role.RoleSelectionRequest;
 import com.example.castfindbackend.dto.role.RoleSelectionResponse;
+import com.example.castfindbackend.dto.user.UserInfoResponse;
+import com.example.castfindbackend.entity.User;
 import com.example.castfindbackend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.castfindbackend.utils.UserUtils.extractUserId;
 
 @RestController
 @RequestMapping("/user")
@@ -20,6 +23,18 @@ public class UserController {
     @PostMapping("/role")
     public RoleSelectionResponse selectRole(@RequestBody RoleSelectionRequest request) {
         return userService.selectRole(request);
+    }
+
+    @PostMapping("/organisation/{id}")
+    public void chooseOrganisation(@PathVariable("id") Long organisationId) {
+        var userId = extractUserId();
+        userService.setOrganisation(userId, organisationId);
+    }
+
+    @GetMapping("/info")
+    public UserInfoResponse getUserInfo() {
+        var userId = extractUserId();
+        return userService.getUserInfo(userId);
     }
 
 

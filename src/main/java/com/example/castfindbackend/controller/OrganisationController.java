@@ -2,10 +2,13 @@ package com.example.castfindbackend.controller;
 
 import com.example.castfindbackend.dto.organisations.OrganisationCreateRequest;
 import com.example.castfindbackend.dto.organisations.OrganisationResponse;
+import com.example.castfindbackend.dto.organisations.OrganisationsResponse;
 import com.example.castfindbackend.mapper.OrganisationMapper;
 import com.example.castfindbackend.service.OrganisationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/organisation")
@@ -22,5 +25,10 @@ public class OrganisationController {
     @GetMapping("/{id}")
     public OrganisationResponse getOrganisation(@PathVariable Long id) {
         return service.findOrganisationById(id);
+    }
+
+    @GetMapping("/all/{id}")
+    public OrganisationsResponse getOrganisationsBySpecId(@PathVariable Long id) {
+        return new OrganisationsResponse(service.getOrganisationBySpecId(id));
     }
 }

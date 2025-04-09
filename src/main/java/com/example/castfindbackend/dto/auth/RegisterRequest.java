@@ -5,5 +5,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterRequest extends AuthRequest {
-    private String phoneNumber;
+    private String number;
 }

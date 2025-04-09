@@ -12,5 +12,5 @@ import java.util.Set;
 @Repository
 public interface SpecializationRepository extends JpaRepository<Specialisation, Long> {
     @Query("SELECT s FROM Specialisation s WHERE s.id IN :ids")
-    Set<Specialisation> findSpecialisations(List<Long> ids);
+    List<Specialisation> findSpecialisations(List<Long> ids);
 }

@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,9 +33,5 @@ public class Organisation {
             joinColumns = @JoinColumn(name = "organisation_id"),
             inverseJoinColumns = @JoinColumn(name = "specialisation_id")
     )
-    private Set<Specialisation> specialisations = new HashSet<>();
-
-    @OneToMany(mappedBy = "organisation")
-    private Set<PhotoOrganisation> photoOrganisations = new HashSet<>();
-
+    private List<Specialisation> specialisations = new ArrayList<>();
 }
