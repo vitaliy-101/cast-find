@@ -1,5 +1,6 @@
 package com.example.castfindbackend.service;
 
+import com.example.castfindbackend.constant.PhotoTypes;
 import com.example.castfindbackend.dto.specialization.SpecializationResponse;
 import com.example.castfindbackend.entity.Specialisation;
 import com.example.castfindbackend.exceptions.NotFoundByIdException;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+
+import static com.example.castfindbackend.constant.PhotoTypes.SPEC_PHOTO_TYPE;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class SpecializationService {
     public List<SpecializationResponse> getAll() {
         var specs = repository.findAll();
         return specs.stream()
-                .map(spec -> mapper.fromEntityToResponse(spec, photoService.findAvatar(spec.getId(), "SPEC")))
+                .map(spec -> mapper.fromEntityToResponse(spec, photoService.findAvatar(spec.getId(), SPEC_PHOTO_TYPE)))
                 .toList();
     }
 

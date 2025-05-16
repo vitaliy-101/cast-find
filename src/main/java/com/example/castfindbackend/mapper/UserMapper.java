@@ -1,6 +1,5 @@
 package com.example.castfindbackend.mapper;
 
-import com.example.castfindbackend.dto.organisations.OrganisationInfo;
 import com.example.castfindbackend.dto.user.UserInfoResponse;
 import com.example.castfindbackend.entity.User;
 import org.mapstruct.Mapper;

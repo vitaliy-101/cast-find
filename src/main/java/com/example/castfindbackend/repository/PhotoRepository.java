@@ -1,7 +1,6 @@
 package com.example.castfindbackend.repository;
 
 import com.example.castfindbackend.entity.Photo;
-import jdk.dynalink.linker.LinkerServices;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

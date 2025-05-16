@@ -27,6 +27,11 @@ public class OrganisationController {
         return service.findOrganisationById(id);
     }
 
+    @GetMapping("/all")
+    public OrganisationsResponse getOrganisations() {
+        return service.getAll();
+    }
+
     @GetMapping("/all/{id}")
     public OrganisationsResponse getOrganisationsBySpecId(@PathVariable Long id) {
         return new OrganisationsResponse(service.getOrganisationBySpecId(id));

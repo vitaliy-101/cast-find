@@ -29,6 +29,7 @@ create table if not exists photo
     type     VARCHAR,
     main     BOOLEAN,
     data     bytea,
+    description VARCHAR,
     other_id BIGINT,
     CONSTRAINT pk_photo primary key (id)
 );
@@ -41,9 +42,23 @@ create table if not exists users
     number          VARCHAR,
     password        VARCHAR,
     role            VARCHAR,
+    description     VARCHAR,
+    area            TEXT,
+    contacts        TEXT,
     organisation_id BIGINT,
     CONSTRAINT pk_users primary key (id),
     CONSTRAINT fk_user_organisation_id FOREIGN KEY (organisation_id) REFERENCES organisation (id) ON DELETE SET NULL
+);
+
+
+create table if not exists portfolio_folder
+(
+    id          BIGSERIAL,
+    title       VARCHAR,
+    description VARCHAR,
+    user_id     BIGINT,
+    CONSTRAINT pk_portfolio_folder primary key (id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 create table if not exists tokens

@@ -9,4 +9,5 @@ public class PhotoCreateRequest {
     private Long otherId;
     private String type;
     private boolean isMain;
+    private String description;
 }

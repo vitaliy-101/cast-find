@@ -18,6 +18,7 @@ public interface AuthMapper {
 
     @Mapping(target = "password", qualifiedByName = "getEncodedPassword", source = "password")
     @Mapping(target = "number", source = "number")
+    @Mapping(target = "role", source = "role")
     User fromRegisterRequestToUser(RegisterRequest registerRequest);
 
     @Named("getEncodedPassword")

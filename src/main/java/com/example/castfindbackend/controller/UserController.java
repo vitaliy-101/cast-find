@@ -3,12 +3,10 @@ package com.example.castfindbackend.controller;
 import com.example.castfindbackend.dto.role.RoleSelectionRequest;
 import com.example.castfindbackend.dto.role.RoleSelectionResponse;
 import com.example.castfindbackend.dto.user.UserInfoResponse;
-import com.example.castfindbackend.entity.User;
+import com.example.castfindbackend.dto.user.UserUpdateRequest;
 import com.example.castfindbackend.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.castfindbackend.utils.UserUtils.extractUserId;
@@ -35,6 +33,12 @@ public class UserController {
     public UserInfoResponse getUserInfo() {
         var userId = extractUserId();
         return userService.getUserInfo(userId);
+    }
+
+    @PutMapping
+    public UserInfoResponse update(@RequestBody UserUpdateRequest request) {
+        var userId = extractUserId();
+        return userService.updateUser(userId, request);
     }
 
 

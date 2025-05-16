@@ -1,6 +1,8 @@
 package com.example.castfindbackend.service;
 
+import com.example.castfindbackend.constant.PhotoTypes;
 import com.example.castfindbackend.dto.organisations.OrganisationResponse;
+import com.example.castfindbackend.dto.organisations.OrganisationsResponse;
 import com.example.castfindbackend.entity.Organisation;
 import com.example.castfindbackend.entity.Specialisation;
 import com.example.castfindbackend.exceptions.NotFoundByIdException;
@@ -11,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.castfindbackend.constant.PhotoTypes.ORGANISATION_PHOTO_TYPE;
+import static com.example.castfindbackend.dto.photo.MainPhotoType.ALL;
+import static com.example.castfindbackend.dto.photo.MainPhotoType.AVATAR;
 
 @Service
 @RequiredArgsConstructor
@@ -33,11 +39,24 @@ public class OrganisationService {
     public OrganisationResponse findOrganisationById(Long id) {
         var organisation = organisationRepository.findById(id).orElseThrow(
                 () -> new NotFoundByIdException(Organisation.class, id));
-        var photos = photoService.findPhotosByTypeAndOtherId(id, "ORGANISATION");
+        var photos = photoService.findPhotosByTypeAndOtherId(id, ORGANISATION_PHOTO_TYPE, ALL);
         return mapper.fromEntityToResponse(organisation, organisation.getSpecialisations()
                 .stream()
                 .map(Specialisation::getName)
                 .toList(), photos);
+    }
+
+    public OrganisationsResponse getAll() {
+        var organisations = organisationRepository.findAll().stream()
+                .map(entity -> {
+                    var photos = photoService.findPhotosByTypeAndOtherId(entity.getId(), ORGANISATION_PHOTO_TYPE, AVATAR);
+                    return mapper.fromEntityToResponse(entity, entity.getSpecialisations()
+                            .stream()
+                            .map(Specialisation::getName)
+                            .toList(), photos);
+                })
+                .toList();
+        return new OrganisationsResponse(organisations);
     }
 
     public Organisation findById(Long id) {
@@ -49,11 +68,13 @@ public class OrganisationService {
         var organisations = organisationRepository.findBySpecialisationId(id);
         return organisations.stream()
                 .map(organisation -> {
-                    var photos = photoService.findPhotosByTypeAndOtherId(organisation.getId(), "ORGANISATION");
+                    var photos = photoService.findPhotosByTypeAndOtherId(organisation.getId(), ORGANISATION_PHOTO_TYPE, ALL);
                     return mapper.fromEntityToResponse(organisation, organisation.getSpecialisations()
                             .stream()
                             .map(Specialisation::getName)
                             .toList(), photos);
                 }).toList();
     }
+
+
 }

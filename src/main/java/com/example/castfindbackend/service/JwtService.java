@@ -45,6 +45,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .subject(user.getNickname())
+                .claim("role", user.getRole().name())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 48*60*60*1000)) //время истечения срока токена
                 .signWith(getSigninKey())

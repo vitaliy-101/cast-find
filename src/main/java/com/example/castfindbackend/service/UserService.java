@@ -3,6 +3,7 @@ package com.example.castfindbackend.service;
 import com.example.castfindbackend.dto.role.RoleSelectionRequest;
 import com.example.castfindbackend.dto.role.RoleSelectionResponse;
 import com.example.castfindbackend.dto.user.UserInfoResponse;
+import com.example.castfindbackend.dto.user.UserUpdateRequest;
 import com.example.castfindbackend.entity.User;
 import com.example.castfindbackend.exceptions.NotFoundByIdException;
 import com.example.castfindbackend.mapper.OrganisationMapper;
@@ -12,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.castfindbackend.constant.PhotoTypes.USER_PHOTO_TYPE;
+import static com.example.castfindbackend.mapper.CustomUserMapper.toUpdateEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +41,7 @@ public class UserService {
         var user = findById(id);
         var userResponse = userMapper.toResponse(user);
         userResponse.setOrganisationInfo(organisationMapper.toInfo(user.getOrganisation()));
-        userResponse.setPhoto(photoService.findAvatar(id, "USER"));
+        userResponse.setPhoto(photoService.findAvatar(id, USER_PHOTO_TYPE));
         return userResponse;
     }
 
@@ -52,6 +56,17 @@ public class UserService {
         var user = findById(userId);
         user.setOrganisation(organisationService.findById(organisationId));
         userRepository.save(user);
+    }
+
+    @Modifying
+    @Transactional
+    public UserInfoResponse updateUser(Long id, UserUpdateRequest request) {
+        var organisation = organisationService.findById(request.getOrganisationId());
+        var user = userRepository.save(toUpdateEntity(findById(id), request, organisation));
+        var userResponse = userMapper.toResponse(user);
+        userResponse.setOrganisationInfo(organisationMapper.toInfo(user.getOrganisation()));
+        userResponse.setPhoto(photoService.findAvatar(id, USER_PHOTO_TYPE));
+        return userResponse;
     }
 
 

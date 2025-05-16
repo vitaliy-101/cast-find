@@ -1,5 +1,6 @@
 package com.example.castfindbackend.entity;
 
+import com.example.castfindbackend.utils.StringListConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,8 +35,22 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "area", columnDefinition = "TEXT")
+    @Convert(converter = StringListConverter.class)
+    private List<String> area;
+
+    @Column(name = "contacts", columnDefinition = "TEXT")
+    @Convert(converter = StringListConverter.class)
+    private List<String> contacts;
+
     @OneToMany(mappedBy = "user")
     private Set<Token> tokens;
+
+    @OneToMany(mappedBy = "user")
+    private Set<PortfolioFolder> portfolioFolders;
 
     @ManyToOne
     @JoinColumn(name = "organisation_id")

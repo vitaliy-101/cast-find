@@ -50,7 +50,6 @@ public class AuthenticationService {
         if (existByNickName(user.getNickname())) {
             throw new ExistByNicknameException(User.class, user.getNickname());
         }
-        user.setRole(Role.TALENT);
         user = userRepository.save(user);
         String jwt = jwtService.generateToken(user);
         saveUserToken(jwt, user);
